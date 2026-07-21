@@ -9,6 +9,7 @@ import com.hirehub.hirehub_backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
+import com.hirehub.hirehub_backend.security.JwtService;
 import java.util.List;
 
 @Service
@@ -16,11 +17,15 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-   public UserServiceImpl(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder) {
+public UserServiceImpl(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       JwtService jwtService) {
+
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
+    this.jwtService = jwtService;
 }
 
     @Override
@@ -90,7 +95,9 @@ public LoginResponse login(LoginRequest request) {
         throw new RuntimeException("Invalid password");
     }
 
-    return new LoginResponse("Login Successful");
+    String token = jwtService.generateToken(user.getEmail());
+
+return new LoginResponse(token);
 }
 
     @Override
