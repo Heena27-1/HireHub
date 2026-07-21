@@ -1,10 +1,14 @@
 package com.hirehub.hirehub_backend.controller;
 
+import com.hirehub.hirehub_backend.dto.LoginRequest;
+import com.hirehub.hirehub_backend.dto.LoginResponse;
 import com.hirehub.hirehub_backend.dto.RegisterRequest;
 import com.hirehub.hirehub_backend.dto.UserResponse;
 import com.hirehub.hirehub_backend.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+import com.hirehub.hirehub_backend.dto.LoginRequest;
+import com.hirehub.hirehub_backend.dto.LoginResponse;
 import java.util.List;
 
 @RestController
@@ -37,4 +41,9 @@ public class UserController {
         userService.deleteUser(id);
         return "User deleted successfully";
     }
+    @PostMapping("/login")
+public LoginResponse login(@Valid @RequestBody LoginRequest request) {
+    return userService.login(request);
+}
+    
 }

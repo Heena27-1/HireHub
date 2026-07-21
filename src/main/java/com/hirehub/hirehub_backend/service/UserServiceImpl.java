@@ -1,5 +1,7 @@
 package com.hirehub.hirehub_backend.service;
 
+import com.hirehub.hirehub_backend.dto.LoginRequest;
+import com.hirehub.hirehub_backend.dto.LoginResponse;
 import com.hirehub.hirehub_backend.dto.RegisterRequest;
 import com.hirehub.hirehub_backend.dto.UserResponse;
 import com.hirehub.hirehub_backend.entity.User;
@@ -77,6 +79,18 @@ public UserResponse getUserById(Long id) {
             user.getRole(),
             user.getCreatedAt()
     );
+}
+@Override
+public LoginResponse login(LoginRequest request) {
+
+    User user = userRepository.findByEmail(request.getEmail())
+            .orElseThrow(() -> new RuntimeException("User not found"));
+
+    if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        throw new RuntimeException("Invalid password");
+    }
+
+    return new LoginResponse("Login Successful");
 }
 
     @Override
