@@ -5,7 +5,7 @@ import com.hirehub.hirehub_backend.dto.UserResponse;
 import com.hirehub.hirehub_backend.entity.User;
 import com.hirehub.hirehub_backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -13,10 +13,13 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+   public UserServiceImpl(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder) {
+    this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
+}
 
     @Override
 public UserResponse registerUser(RegisterRequest request) {
@@ -25,7 +28,7 @@ public UserResponse registerUser(RegisterRequest request) {
 
     user.setFullName(request.getFullName());
     user.setEmail(request.getEmail());
-    user.setPassword(request.getPassword());
+    user.setPassword(passwordEncoder.encode(request.getPassword()));
     user.setPhone(request.getPhone());
     user.setRole(request.getRole());
     user.setCreatedAt(LocalDateTime.now());
