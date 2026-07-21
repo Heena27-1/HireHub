@@ -4,7 +4,7 @@ import com.hirehub.hirehub_backend.dto.RegisterRequest;
 import com.hirehub.hirehub_backend.dto.UserResponse;
 import com.hirehub.hirehub_backend.service.UserService;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,7 +18,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public UserResponse registerUser(@RequestBody RegisterRequest request) {
+    public UserResponse registerUser(@Valid @RequestBody RegisterRequest request) {
         return userService.registerUser(request);
     }
 

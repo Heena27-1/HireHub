@@ -1,13 +1,28 @@
 package com.hirehub.hirehub_backend.dto;
 
 import com.hirehub.hirehub_backend.entity.Role;
-
+import jakarta.validation.constraints.*;
 public class RegisterRequest {
 
+    @NotBlank(message = "Full name is required")
     private String fullName;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Enter a valid email")
     private String email;
+
+    @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must contain at least 6 characters")
     private String password;
+
+    @NotBlank(message = "Phone number is required")
+    @Pattern(
+            regexp = "^[0-9]{10}$",
+            message = "Phone number must contain exactly 10 digits"
+    )
     private String phone;
+
+    @NotNull(message = "Role is required")
     private Role role;
 
     public RegisterRequest() {
