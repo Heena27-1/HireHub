@@ -1,5 +1,7 @@
 package com.hirehub.hirehub_backend.service;
 
+import com.hirehub.hirehub_backend.dto.RegisterRequest;
+import com.hirehub.hirehub_backend.dto.UserResponse;
 import com.hirehub.hirehub_backend.entity.User;
 import com.hirehub.hirehub_backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -17,10 +19,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(User user) {
-        user.setCreatedAt(LocalDateTime.now());
-        return userRepository.save(user);
-    }
+public UserResponse registerUser(RegisterRequest request) {
+
+    User user = new User();
+
+    user.setFullName(request.getFullName());
+    user.setEmail(request.getEmail());
+    user.setPassword(request.getPassword());
+    user.setPhone(request.getPhone());
+    user.setRole(request.getRole());
+    user.setCreatedAt(LocalDateTime.now());
+
+    User savedUser = userRepository.save(user);
+
+    return new UserResponse(
+            savedUser.getId(),
+            savedUser.getFullName(),
+            savedUser.getEmail(),
+            savedUser.getPhone(),
+            savedUser.getRole(),
+            savedUser.getCreatedAt()
+    );
+}
 
     @Override
     public List<User> getAllUsers() {

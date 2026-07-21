@@ -1,17 +1,17 @@
 package com.hirehub.hirehub_backend.service;
 
-import com.hirehub.hirehub_backend.entity.User;
+import com.hirehub.hirehub_backend.dto.RegisterRequest;
+import com.hirehub.hirehub_backend.dto.UserResponse;
 
 import java.util.List;
 
 public interface UserService {
 
-    User registerUser(User user);
+    UserResponse registerUser(RegisterRequest request);
 
-    List<User> getAllUsers();
+    List<UserResponse> getAllUsers();
 
-    User getUserById(Long id);
+    UserResponse getUserById(Long id);
 
     void deleteUser(Long id);
-
 }
