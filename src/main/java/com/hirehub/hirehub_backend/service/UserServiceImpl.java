@@ -47,6 +47,7 @@ public UserResponse registerUser(RegisterRequest request) {
             savedUser.getFullName(),
             savedUser.getEmail(),
             savedUser.getPhone(),
+            savedUser.getResumeUrl(),
             savedUser.getRole(),
             savedUser.getCreatedAt()
     );
@@ -62,6 +63,7 @@ public List<UserResponse> getAllUsers() {
                     user.getFullName(),
                     user.getEmail(),
                     user.getPhone(),
+                    user.getResumeUrl(),
                     user.getRole(),
                     user.getCreatedAt()))
             .toList();
@@ -81,6 +83,7 @@ public UserResponse getUserById(Long id) {
             user.getFullName(),
             user.getEmail(),
             user.getPhone(),
+            user.getResumeUrl(),
             user.getRole(),
             user.getCreatedAt()
     );

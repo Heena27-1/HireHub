@@ -12,17 +12,19 @@ public class UserResponse {
     private String phone;
     private Role role;
     private LocalDateTime createdAt;
+    private String resumeUrl;
 
     public UserResponse() {
     }
 
     public UserResponse(Long id, String fullName, String email,
-                        String phone, Role role,
+                        String phone, String resumeUrl,Role role,
                         LocalDateTime createdAt) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
+        this.resumeUrl = resumeUrl;
         this.role = role;
         this.createdAt = createdAt;
     }
@@ -54,6 +56,9 @@ public class UserResponse {
     public String getPhone() {
         return phone;
     }
+    public String getResumeUrl() {
+    return resumeUrl;
+}
 
     public void setPhone(String phone) {
         this.phone = phone;

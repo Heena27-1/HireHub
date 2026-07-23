@@ -26,15 +26,17 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
     }
-@Bean
-public AuthenticationProvider authenticationProvider() {
-    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
-    provider.setUserDetailsService(userDetailsService);
-    provider.setPasswordEncoder(passwordEncoder);
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
 
-    return provider;
-}
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+
+        return provider;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http)
@@ -42,19 +44,19 @@ public AuthenticationProvider authenticationProvider() {
 
         http
                 .csrf(csrf -> csrf.disable())
+
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS))
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers(
                                 "/api/users/register",
-                                "/api/users/login"
+                                "/api/users/login",
+                                "/api/applications/**"   // Temporary for debugging
                         ).permitAll()
 
-                        .anyRequest()
-                        .authenticated())
+                        .anyRequest().authenticated())
 
                 .authenticationProvider(authenticationProvider())
 

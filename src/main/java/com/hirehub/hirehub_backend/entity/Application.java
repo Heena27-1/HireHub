@@ -6,30 +6,27 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
+@Table(name = "applications")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Application {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fullName;
+    @ManyToOne
+    @JoinColumn(name = "job_id", nullable = false)
+    private Job job;
 
-    @Column(unique = true, nullable = false)
-    private String email;
-
-    private String password;
-
-    private String phone;
-
-    private String resumeUrl;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User student;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private ApplicationStatus status;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime appliedAt;
 }
