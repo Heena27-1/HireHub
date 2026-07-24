@@ -10,6 +10,8 @@ import jakarta.validation.Valid;
 import com.hirehub.hirehub_backend.dto.LoginRequest;
 import com.hirehub.hirehub_backend.dto.LoginResponse;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/api/users")
@@ -35,6 +37,15 @@ public class UserController {
     public UserResponse getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
+    @PostMapping("/{id}/resume")
+public ResponseEntity<String> uploadResume(
+        @PathVariable Long id,
+        @RequestParam("file") MultipartFile file) {
+
+    String message = userService.uploadResume(id, file);
+
+    return ResponseEntity.ok(message);
+}
 
     @DeleteMapping("/{id}")
     public String deleteUser(@PathVariable Long id) {

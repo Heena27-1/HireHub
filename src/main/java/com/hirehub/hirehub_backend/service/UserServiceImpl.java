@@ -11,6 +11,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 import com.hirehub.hirehub_backend.security.JwtService;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
+import com.hirehub.hirehub_backend.service.storage.FileStorageService;
+import java.io.IOException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -18,15 +21,19 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-
-public UserServiceImpl(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder,
-                       JwtService jwtService) {
+    private final FileStorageService fileStorageService;
+public UserServiceImpl(
+        UserRepository userRepository,
+        PasswordEncoder passwordEncoder,
+        JwtService jwtService,
+        FileStorageService fileStorageService) {
 
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
     this.jwtService = jwtService;
+    this.fileStorageService = fileStorageService;
 }
+
 
     @Override
 public UserResponse registerUser(RegisterRequest request) {
@@ -101,6 +108,26 @@ public LoginResponse login(LoginRequest request) {
     String token = jwtService.generateToken(user.getEmail());
 
 return new LoginResponse(token);
+}
+@Override
+public String uploadResume(Long userId, MultipartFile file) {
+
+    try {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        String fileName = fileStorageService.uploadResume(file);
+
+        user.setResumeUrl(fileName);
+
+        userRepository.save(user);
+
+        return "Resume uploaded successfully";
+
+    } catch (IOException e) {
+        throw new RuntimeException("Could not upload resume");
+    }
 }
 
     @Override
