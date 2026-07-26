@@ -5,7 +5,7 @@ import com.hirehub.hirehub_backend.dto.JobResponse;
 import com.hirehub.hirehub_backend.service.JobService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.data.domain.Page;
 import java.util.List;
 
 @RestController
@@ -27,6 +27,20 @@ public class JobController {
     public List<JobResponse> getAllJobs() {
         return jobService.getAllJobs();
     }
+    @GetMapping("/paged")
+public Page<JobResponse> getAllJobsPaged(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "5") int size) {
+
+    return jobService.getAllJobsPaged(page, size);
+}
+@GetMapping("/sorted")
+public List<JobResponse> getAllJobsSorted(
+        @RequestParam(defaultValue = "createdAt") String sortBy,
+        @RequestParam(defaultValue = "asc") String direction) {
+
+    return jobService.getAllJobsSorted(sortBy, direction);
+}
     @GetMapping("/search/title")
 public List<JobResponse> searchByTitle(
         @RequestParam String title) {

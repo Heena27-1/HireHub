@@ -5,8 +5,10 @@ import com.hirehub.hirehub_backend.dto.JobResponse;
 import com.hirehub.hirehub_backend.entity.Job;
 import com.hirehub.hirehub_backend.repository.JobRepository;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import java.time.LocalDateTime;
+import org.springframework.data.domain.Sort;
 import java.util.List;
 
 @Service
@@ -36,15 +38,33 @@ public class JobServiceImpl implements JobService {
 
         return mapToResponse(savedJob);
     }
-
     @Override
-    public List<JobResponse> getAllJobs() {
+public List<JobResponse> getAllJobs() {
 
-        return jobRepository.findAll()
-                .stream()
-                .map(this::mapToResponse)
-                .toList();
-    }
+    return jobRepository.findAll()
+            .stream()
+            .map(this::mapToResponse)
+            .toList();
+}
+
+@Override
+public Page<JobResponse> getAllJobsPaged(int page, int size) {
+
+    return jobRepository.findAll(PageRequest.of(page, size))
+            .map(this::mapToResponse);
+}
+@Override
+public List<JobResponse> getAllJobsSorted(String sortBy, String direction) {
+
+    Sort sort = direction.equalsIgnoreCase("desc")
+            ? Sort.by(sortBy).descending()
+            : Sort.by(sortBy).ascending();
+
+    return jobRepository.findAll(sort)
+            .stream()
+            .map(this::mapToResponse)
+            .toList();
+}
 
     @Override
     public JobResponse getJobById(Long id) {

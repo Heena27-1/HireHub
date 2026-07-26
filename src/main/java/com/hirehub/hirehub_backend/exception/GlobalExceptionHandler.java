@@ -31,4 +31,31 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(response);
     }
+    @ExceptionHandler(RuntimeException.class)
+public ResponseEntity<ErrorResponse> handleRuntimeException(
+        RuntimeException ex) {
+
+    ErrorResponse response = new ErrorResponse(
+            LocalDateTime.now(),
+            HttpStatus.BAD_REQUEST.value(),
+            ex.getMessage(),
+            null
+    );
+
+    return ResponseEntity.badRequest().body(response);
+}
+@ExceptionHandler(Exception.class)
+public ResponseEntity<ErrorResponse> handleException(
+        Exception ex) {
+
+    ErrorResponse response = new ErrorResponse(
+            LocalDateTime.now(),
+            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            "Something went wrong",
+            null
+    );
+
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(response);
+}
 }
