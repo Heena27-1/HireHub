@@ -57,6 +57,30 @@ public class JobServiceImpl implements JobService {
 
         return mapToResponse(job);
     }
+    @Override
+public List<JobResponse> searchByTitle(String title) {
+
+    return jobRepository.findByTitleContainingIgnoreCase(title)
+            .stream()
+            .map(this::mapToResponse)
+            .toList();
+}
+@Override
+public List<JobResponse> searchByLocation(String location) {
+
+    return jobRepository.findByLocationContainingIgnoreCase(location)
+            .stream()
+            .map(this::mapToResponse)
+            .toList();
+}
+@Override
+public List<JobResponse> searchBySkills(String skills) {
+
+    return jobRepository.findBySkillsContainingIgnoreCase(skills)
+            .stream()
+            .map(this::mapToResponse)
+            .toList();
+}
 
     @Override
     public void deleteJob(Long id) {

@@ -27,6 +27,24 @@ public class JobController {
     public List<JobResponse> getAllJobs() {
         return jobService.getAllJobs();
     }
+    @GetMapping("/search/title")
+public List<JobResponse> searchByTitle(
+        @RequestParam String title) {
+
+    return jobService.searchByTitle(title);
+}
+@GetMapping("/search/location")
+public List<JobResponse> searchByLocation(
+        @RequestParam String location) {
+
+    return jobService.searchByLocation(location);
+}
+@GetMapping("/search/skills")
+public List<JobResponse> searchBySkills(
+        @RequestParam String skills) {
+
+    return jobService.searchBySkills(skills);
+}
 
     @GetMapping("/{id}")
     public JobResponse getJobById(@PathVariable Long id) {

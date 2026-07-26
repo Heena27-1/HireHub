@@ -12,6 +12,11 @@ public interface JobService {
     List<JobResponse> getAllJobs();
 
     JobResponse getJobById(Long id);
+    List<JobResponse> searchByTitle(String title);
+
+List<JobResponse> searchByLocation(String location);
+
+List<JobResponse> searchBySkills(String skills);
 
     void deleteJob(Long id);
 }
